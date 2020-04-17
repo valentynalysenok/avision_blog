@@ -6,4 +6,4 @@ Basic models:<br />
     - used hunter.io for verifying email existence on signup
     - use clearbit.com for getting additional data for the user on signup (user's first and last name)
 - Post (made by a registered user)<br />
-    - Post CRUD operations 
+    - Post CRUD operations by using Class-based views Django
