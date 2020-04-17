@@ -46,10 +46,26 @@
                                 <li><a href="{% url 'about' %}">About</a></li>
                                 <li><a href="{% url 'posts:posts_list' %}">Posts</a></li>
                                 <li><a href="{% url 'contact' %}">Contact</a></li>
+                                <!-- View for is authenticated -->
                                 {% if request.user.is_authenticated %}
-{#                                    <li><a href="{% url 'posts:post_create' %}">&plus;Add Post</a></li>#}
-                                    <li><a href="/accounts/logout/">Logout</a></li>
+                                    <div class="btn-group">
+                                        <button type="button"
+                                                class="btn btn-outline-success">{{ request.user.username }}</button>
+                                        <button type="button"
+                                                class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
+                                                data-toggle="dropdown">
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a href="{% url 'posts:posts_list_owner' request.user %}"
+                                               class="dropdown-item">My Posts</a>
+                                            <a href="{% url 'posts:create_post' %}" class="dropdown-item">&plus;Add
+                                                Post</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a href="/accounts/logout/" class="dropdown-item">Logout</a>
+                                        </div>
+                                    </div>
                                 {% endif %}
+                                <!-- View for is not authenticated -->
                                 {% if not request.user.is_authenticated %}
                                     <li><a href="{% url 'users:django_registration_register' %}">Sign up</a></li>
                                     <li><a href="/accounts/login/">Sign in</a></li>
@@ -92,19 +108,30 @@
         </div>
         <nav class="menu_nav">
             <ul class="menu_mm">
-                <li class="menu_mm"><a href="{% url 'blog' %}">home</a></li>
+                <li class="menu_mm"><a href="{% url 'blog' %}">Home</a></li>
                 <li class="menu_mm"><a href="{% url 'about' %}">About</a></li>
                 <li class="menu_mm"><a href="{% url 'posts:posts_list' %}">Posts</a></li>
                 <li class="menu_mm"><a href="{% url 'contact' %}">Contact</a></li>
+                <!-- View for is authenticated -->
                 {% if request.user.is_authenticated %}
-{#                    <li><a href="{% url 'posts:post_create' %}">&plus;Add Post</a></li>#}
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-outline-success">{{ request.user.username }}</button>
+                        <button type="button"
+                                class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
+                                data-toggle="dropdown">
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="{% url 'posts:posts_list_owner' request.user %}" class="dropdown-item">My Posts</a>
+                            <a href="{% url 'posts:create_post' %}" class="dropdown-item">&plus;Add Post</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="/accounts/logout/" class="dropdown-item">Logout</a>
+                        </div>
+                    </div>
                 {% endif %}
-
+                <!-- View for is not authenticated -->
                 {% if not request.user.is_authenticated %}
                     <li><a href="{% url 'users:django_registration_register' %}">Sign up</a></li>
                     <li><a href="/accounts/login/">Sign in</a></li>
-                {% else %}
-                    <li><a href="/accounts/logout/">Logout</a></li>
                 {% endif %}
             </ul>
         </nav>

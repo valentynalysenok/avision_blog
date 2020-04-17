@@ -2,8 +2,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 
+from posts.utils import custom_slugify
 from users.models import CustomUser
-from .managers import PublishedManager
 
 
 class Post(models.Model):
@@ -16,7 +16,6 @@ class Post(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     body = models.TextField()
     publish = models.DateTimeField(default=timezone.now)
-    published = PublishedManager()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
@@ -24,9 +23,19 @@ class Post(models.Model):
     class Meta:
         ordering = ('-publish',)
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = custom_slugify(self.title)
+        super().save(*args, **kwargs)
+
     def get_absolute_url(self):
-        return reverse('posts:post_detail', args=[
-            self.publish.year, self.publish.month, self.publish.day, self.slug])
+        return reverse('posts:post_detail', kwargs={'slug': self.slug})
+
+    def get_update_url(self):
+        return reverse('posts:update_post', kwargs={'slug': self.slug})
+
+    def get_delete_url(self):
+        return reverse('posts:delete_post', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.title

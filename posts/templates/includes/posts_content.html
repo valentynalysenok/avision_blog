@@ -1,0 +1,91 @@
+{% load static %}
+
+<div class="page_content">
+    <div class="container">
+        <div class="row row-lg-eq-height">
+
+            <!-- Main Content -->
+
+            <div class="col-lg-9">
+                <div class="main_content">
+                    <!-- Messages -->
+                    <div class="container">
+                        {% if messages %}
+                            <ul class="alert alert-success" style="list-style-type: none;">
+                                {% for message in messages %}
+                                    <li{% if message.tags %}
+                                        class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                    <!-- Category -->
+
+                    <div class="category">
+                        <div class="section_panel d-flex flex-row align-items-center justify-content-start">
+                            <div class="section_title">Don't Miss</div>
+                            <div class="section_tags ml-auto">
+                                <ul>
+                                    <li class="active"><a href="posts.html">all</a></li>
+                                    <li><a href="posts.html">style hunter</a></li>
+                                    <li><a href="posts.html">vogue</a></li>
+                                    <li><a href="posts.html">health & fitness</a></li>
+                                    <li><a href="posts.html">travel</a></li>
+                                </ul>
+                            </div>
+                            <div class="section_panel_more">
+                                <ul>
+                                    <li>more
+                                        <ul>
+                                            <li><a href="posts.html">new look 2018</a></li>
+                                            <li><a href="posts.html">street fashion</a></li>
+                                            <li><a href="posts.html">business</a></li>
+                                            <li><a href="posts.html">recipes</a></li>
+                                            <li><a href="posts.html">sport</a></li>
+                                            <li><a href="posts.html">celebrities</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="section_content">
+
+                            {% for post in posts %}
+                                <div class="card mb-4">
+                                    <img class=" card-img-top" src="{% static 'images/post_10.jpg' %}" alt="">
+                                    <div class="card-body">
+                                        <div class="card-title card-title-small">
+                                            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                                        </div>
+                                        <div class="card-title card-title-small">
+                                            <p>{{ post.body | truncatewords:10 }}</p>
+                                        </div>
+                                        <small class="post_meta">
+                                            <a href="#">{{ post.author }}</a>
+                                            <span>{{ post.publish }}</span>
+                                        </small>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+
+                {% if is_paginated %}
+                    <div class="load_more">
+                        {% include 'includes/paginator.html' %}
+                    </div>
+                {% endif %}
+
+            </div>
+
+            {% block sidebar %}
+                <!-- Sidebar -->
+                {% include 'includes/sidebar.html' %}
+            {% endblock %}
+
+        </div>
+    </div>
+</div>

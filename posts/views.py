@@ -1,25 +1,97 @@
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, UpdateView, DeleteView, CreateView, TemplateView, DetailView
 
-from posts.models import Post
+from .forms import PostForm
+from .models import Post
 
 
-def blog(request):
-    return render(request, 'base.html')
+class BlogView(TemplateView):
+    template_name = 'base.html'
 
 
 class PostListView(ListView):
-    queryset = Post.published.all()
+    queryset = Post.objects.filter(status='published')
     context_object_name = 'posts'
-    paginate_by = 3
     template_name = 'posts.html'
+    paginate_by = 3
+
+    def get_context_data(self, **kwargs):
+        """Pagination for posts list view"""
+        context = super(PostListView, self).get_context_data(**kwargs)
+        books = self.get_queryset()
+        page = self.request.GET.get('page')
+        paginator = Paginator(books, self.paginate_by)
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+        context['posts'] = posts
+        return context
 
 
-def post_details(request, year, month, day, post):
-    post = get_object_or_404(Post, slug=post, status='published',
-                             publish__year=year,
-                             publish__month=month,
-                             publish__day=day)
-    return render(request, 'post_details.html', {
-        'post': post
-    })
+class PostListUserView(ListView):
+    model = Post
+    context_object_name = 'posts'
+    template_name = 'posts_owner.html'
+    paginate_by = 3
+
+    def get_queryset(self):
+        return self.model.objects.filter(author=self.request.user, status='published')
+
+
+class PostDetailsView(DetailView):
+    model = Post
+    context_object_name = 'post'
+    template_name = 'post_details.html'
+
+
+class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'post_create.html'
+    success_url = reverse_lazy('posts:posts_list')
+    success_message = ""
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        if form.instance.author.is_staff or form.instance.author.is_superuser:
+            form.instance.status = 'published'
+            self.success_message = "Your post added successfully."
+        else:
+            self.success_message = "Your post added and waiting for moderation."
+        return super().form_valid(form)
+
+
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'post_update.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        """ Making sure that only authors can update posts """
+        obj = self.get_object()
+        if obj.author != self.request.user:
+            messages.error(request, 'Restricted access. You are not owner of this post.')
+            return redirect(obj)
+        return super(PostUpdateView, self).dispatch(request, *args, **kwargs)
+
+
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'post_delete.html'
+    success_url = reverse_lazy('posts:posts_list')
+
+    def dispatch(self, request, *args, **kwargs):
+        """ Making sure that only authors can delete posts """
+        obj = self.get_object()
+        if obj.author != self.request.user and not request.user.is_superuser:
+            messages.error(request, 'Restricted access. You are not owner of this post.')
+            return redirect(obj)
+        return super(PostDeleteView, self).dispatch(request, *args, **kwargs)

@@ -34,12 +34,24 @@
 
                 <div class="col-lg-10 offset-lg-1">
                     <div class="post_content" style="margin-bottom: 0;">
+                        <!-- Messages -->
+                        <div class="container">
+                            {% if messages %}
+                                <ul class="alert alert-success" style="list-style-type: none;">
+                                    {% for message in messages %}
+                                        <li{% if message.tags %}
+                                            class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
 
                         <!-- Post Body -->
 
                         <div class="post_body">
-                            <p class="post_p">{{ post.body | linebreaks }}</p>
-
+                            <p class="post_p">{{ post.body }}</p>
+                            <a href="{{ post.get_update_url }}" class="btn btn-outline-warning">Update Post</a>
+                            <a href="{{ post.get_delete_url }}" class="btn btn-outline-danger">Delete Post</a>
                             <!-- Post Tags and Share-->
                             <div class="tags_share d-flex flex-row align-items-center justify-content-start">
                                 <div class="post_tags">
@@ -115,7 +127,8 @@
                                             <div class="comment_body">
                                                 <div class="comment_panel d-flex flex-row align-items-center justify-content-start">
                                                     <div class="comment_author_image">
-                                                        <div><img src="{% static 'images/comment_author_1.jpg' %}" alt=""></div>
+                                                        <div><img src="{% static 'images/comment_author_1.jpg' %}"
+                                                                  alt=""></div>
                                                     </div>
                                                     <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
                                                     <button type="button" class="reply_button ml-auto">Reply</button>

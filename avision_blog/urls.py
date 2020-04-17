@@ -19,13 +19,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from posts.views import blog
+from posts.views import BlogView
 from .views import about, contact
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', blog, name='blog'),
+    path('', BlogView.as_view(), name='blog'),
     path('blog/', include(('posts.urls', 'posts'), namespace='posts')),
     path('users/', include(('users.urls', 'users'), namespace='users')),
 

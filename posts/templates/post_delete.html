@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Delete Post "{{ post.title|title }}"</title>
+{% endblock %}
+
+{% block content %}
+
+    <!-- Home -->
+
+    <div class="home">
+        <div class="home_background parallax-window" data-parallax="scroll"
+             style="background-image:url(https://www.gessato.com/wp-content/uploads/2017/08/modern-bicycle-design-yee-bike-3.jpg);"
+             data-speed="0.8">
+        </div>
+
+        <div class="home_content" style="max-width: 1200px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 offset-lg-3">
+                        <div class="post_comment">
+                            <div class="contact_form_container">
+                                <div>
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <h1>Are you sure you want to delete <b>{{ post.title|title }}</b> post?</h1>
+                                        <div class="mt-5 mb-5">
+                                            <a href="{{ post.get_absolute_url }}" class="btn btn-dark">Cancel</a>
+                                            <button type="submit" name="button" class="btn btn-danger">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
