@@ -23,9 +23,9 @@ class PostListView(ListView):
     def get_context_data(self, **kwargs):
         """Pagination for posts list view"""
         context = super(PostListView, self).get_context_data(**kwargs)
-        books = self.get_queryset()
+        posts = self.get_queryset()
         page = self.request.GET.get('page')
-        paginator = Paginator(books, self.paginate_by)
+        paginator = Paginator(posts, self.paginate_by)
         try:
             posts = paginator.page(page)
         except PageNotAnInteger:
