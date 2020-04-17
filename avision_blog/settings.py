@@ -25,6 +25,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env.str('SECRET_KEY')
+EMAIL_HUNTER_API_KEY = 'd3b26a5ba37161e904ea6bc20a67357130f4b58f'
+CLEARBIT_API_KEY = 'sk_370aad570bb0647dbfced41592fe1f6d'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -42,7 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'crispy_forms',
+
     'posts',
+    'users',
 
 ]
 
@@ -139,3 +144,22 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+SITE_URL = 'localhost:8000/'
+
+# login
+LOGIN_URL = 'users/accounts/login'
+LOGIN_REDIRECT_URL = 'blog'
+LOGOUT_REDIRECT_URL = 'blog'
+
+# Custom User Model
+AUTH_USER_MODEL = 'users.CustomUser'
+
+# django-crispy-forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# django.contrib.sites
+SITE_ID = 1
+
+# django.allauth
+ACCOUNT_EMAIL_REQUIRED = True

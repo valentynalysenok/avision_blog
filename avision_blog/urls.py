@@ -27,6 +27,10 @@ urlpatterns = [
 
     path('', blog, name='blog'),
     path('blog/', include(('posts.urls', 'posts'), namespace='posts')),
+    path('users/', include(('users.urls', 'users'), namespace='users')),
+
+    path('accounts/', include('django_registration.backends.one_step.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
 
     path('about/', about, name='about'),
     path('contact/', contact, name='contact')
