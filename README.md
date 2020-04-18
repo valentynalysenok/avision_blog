@@ -10,3 +10,4 @@ Basic models:<br />
     - Share post by using **email / custom logic** (Gmail-serever)
     - Share post by using **django-social-share** (Facebook, LinkedIn, Twitter, Telegram, WhatsApp)
 - Comment (made by a registered user)<br />
+- Tags by using **django_taggit**
