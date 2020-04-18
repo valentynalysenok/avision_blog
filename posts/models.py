@@ -4,8 +4,8 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 
-from posts.utils import custom_slugify
 from users.models import CustomUser
+from .utils import custom_slugify, send_email
 
 
 class Post(models.Model):
@@ -57,3 +57,12 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'Comment by {self.user.username} on {self.post}'
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            send_email(f"Avision Blog - Comment was added to your post {self.post.title}",
+                       f"Username: {self.user.username}\n"
+                       f"Email: {self.user.email}\n"
+                       f"Comment body: {self.body}",
+                       (self.post.author.email,))
+        super().save(*args, **kwargs)
