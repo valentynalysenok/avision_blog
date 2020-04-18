@@ -7,3 +7,4 @@ Basic models:<br />
     - use clearbit.com for getting additional data for the user on signup (user's first and last name)
 - Post (made by a registered user)<br />
     - Post CRUD operations by using Class-based views Django
+    - Share post by using email (Gmail-serever)
