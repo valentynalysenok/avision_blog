@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load social_share %}
 
 {% block title %}
     <title>Post Details</title>
@@ -65,9 +66,19 @@
                                     <span>share</span>
                                     <ul class="post_share_list">
                                         <li class="post_share_item">
-                                            <a href="#">
-                                                <i class="fa fa-facebook" aria-hidden="true"></i>
-                                            </a>
+                                            {% post_to_facebook post_or_url "Great Post. Check it out!" %}
+                                        </li>
+                                        <li class="post_share_item">
+                                             {% post_to_linkedin post.title post_or_url "Great Post. Check it out!" %}
+                                        </li>
+                                        <li class="post_share_item">
+                                             {% post_to_twitter "Great Post. Check it out!" post_or_url %}
+                                        </li>
+                                        <li class="post_share_item">
+                                             {% post_to_telegram "Great Post. Check it out! {{post.title}}" post_or_url %}
+                                        </li>
+                                        <li class="post_share_item">
+                                             {% post_to_whatsapp object_or_url "Share via WhatsApp" %}
                                         </li>
                                         <li class="post_share_item">
                                             <a href="{% url 'posts:share_post' post.slug %}">
