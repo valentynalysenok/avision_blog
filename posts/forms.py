@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Post
+from .models import Post, Comment
 
 
 class PostForm(forms.ModelForm):
@@ -22,8 +22,21 @@ class PostForm(forms.ModelForm):
 
 
 class EmailPostForm(forms.Form):
-    name = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'class': 'form-control mt-2', 'placeholder': 'Name'}))
-    email_to = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control mt-2', 'placeholder': 'Email To'}))
-    email_from = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control mt-2', 'placeholder': 'Email From'}))
-    comments = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control mt-2',
-                                                                            'placeholder': 'Type Your Comment here...'}))
+    name = forms.CharField(max_length=255, widget=forms.TextInput(
+        attrs={'class': 'form-control mt-2', 'placeholder': 'Name'}))
+    email_to = forms.EmailField(max_length=50, widget=forms.TextInput(
+        attrs={'class': 'form-control mt-2', 'placeholder': 'Email To'}))
+    email_from = forms.EmailField(max_length=50, widget=forms.TextInput(
+        attrs={'class': 'form-control mt-2', 'placeholder': 'Email From'}))
+    comments = forms.CharField(required=False, widget=forms.Textarea(
+        attrs={'class': 'form-control mt-2', 'placeholder': 'Type Your Comment here...'}))
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('body',)
+
+        widgets = {
+            'body': forms.Textarea(attrs={'class': 'form-control mt-2', 'placeholder': 'Type your comment here...'}),
+        }

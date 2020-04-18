@@ -6,8 +6,8 @@ from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView, TemplateView, DetailView
 
-from .forms import PostForm, EmailPostForm
-from .models import Post
+from .forms import PostForm, EmailPostForm, CommentForm
+from .models import Post, Comment
 from .utils import send_email
 
 
@@ -51,6 +51,25 @@ class PostDetailsView(DetailView):
     model = Post
     context_object_name = 'post'
     template_name = 'post_details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        post = self.model.objects.get(slug=self.kwargs.get('slug'))
+        context['comments'] = post.comments.filter(active=True)
+        context['form'] = CommentForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        try:
+            if request.method == 'POST':
+                form = CommentForm(request.POST)
+                form.instance.post = self.model.objects.get(slug=self.kwargs.get('slug'))
+                form.instance.user = self.request.user
+                form.save()
+                return redirect('posts:post_detail', slug=self.kwargs.get('slug'))
+            return redirect('posts:post_detail', slug=self.kwargs.get('slug'))
+        except ValueError:
+            return redirect('users:django_registration_register')
 
 
 class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):

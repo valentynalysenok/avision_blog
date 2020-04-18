@@ -69,16 +69,16 @@
                                             {% post_to_facebook post_or_url "Great Post. Check it out!" %}
                                         </li>
                                         <li class="post_share_item">
-                                             {% post_to_linkedin post.title post_or_url "Great Post. Check it out!" %}
+                                            {% post_to_linkedin post.title post_or_url "Great Post. Check it out!" %}
                                         </li>
                                         <li class="post_share_item">
-                                             {% post_to_twitter "Great Post. Check it out!" post_or_url %}
+                                            {% post_to_twitter "Great Post. Check it out!" post_or_url %}
                                         </li>
                                         <li class="post_share_item">
-                                             {% post_to_telegram "Great Post. Check it out! {{post.title}}" post_or_url %}
+                                            {% post_to_telegram "Great Post. Check it out! {{post.title}}" post_or_url %}
                                         </li>
                                         <li class="post_share_item">
-                                             {% post_to_whatsapp object_or_url "Share via WhatsApp" %}
+                                            {% post_to_whatsapp object_or_url "Share via WhatsApp" %}
                                         </li>
                                         <li class="post_share_item">
                                             <a href="{% url 'posts:share_post' post.slug %}">
@@ -88,7 +88,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <p class="post_p">{{ post.body }}</p>
+                            <p class="post_p">{{ post.body|linebreaks }}</p>
                         </div>
                     </div>
                 </div>
@@ -101,82 +101,52 @@
                     <div class="post_comment">
                         <div class="post_comment_title">Post Comment</div>
                         <div class="post_comment_form_container">
-                            <form action="#">
-                                <input type="text" class="comment_input comment_input_name" placeholder="Your Name"
-                                       required="required">
-                                <input type="email" class="comment_input comment_input_email" placeholder="Your Email"
-                                       required="required">
-                                <textarea class="comment_text" placeholder="Your Comment"
-                                          required="required"></textarea>
-                                <button type="submit" class="comment_button">Post Comment</button>
-                            </form>
+                            {% if comment %}
+                                <h2>Your comment has been added.</h2>
+                            {% else %}
+                                <form action="." method="post">
+                                    {% csrf_token %}
+                                    {% for field in form %} {{ field }} {% endfor %}
+                                    <button type="submit" class="comment_button">Post Comment</button>
+                                </form>
+                            {% endif %}
                         </div>
                     </div>
 
                     <!-- Comments -->
                     <div class="comments">
-                        <div class="comments_title">Comments <span>(12)</span></div>
+                        <div class="comments_title">
+                            {% with comments.count as total_comments %}
+                                Comment{{ total_comments|pluralize }} <span>({{ total_comments }})</span>
+                            {% endwith %}
+                        </div>
                         <div class="comments_container">
                             <ul class="comment_list">
-                                <li class="comment">
-                                    <div class="comment_body">
-                                        <div class="comment_panel d-flex flex-row align-items-center justify-content-start">
-                                            <div class="comment_author_image">
-                                                <div><img src="{% static 'images/comment_author_1.jpg' %}" alt=""></div>
-                                            </div>
-                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
-                                            <button type="button" class="reply_button ml-auto">Reply</button>
-                                        </div>
-                                        <div class="comment_content">
-                                            <p>Pick the yellow peach that looks like a sunset with its red, orange, and
-                                                pink coat skin, peel it off with your teeth. Sink them into
-                                                unripened.</p>
-                                        </div>
-                                    </div>
 
-                                    <!-- Reply -->
-                                    <ul class="comment_list">
-                                        <li class="comment">
-                                            <div class="comment_body">
-                                                <div class="comment_panel d-flex flex-row align-items-center justify-content-start">
-                                                    <div class="comment_author_image">
-                                                        <div><img src="{% static 'images/comment_author_1.jpg' %}"
-                                                                  alt=""></div>
+                                {% for comment in comments %}
+                                    <li class="comment">
+                                        <div class="comment_body">
+                                            <div class="comment_panel d-flex flex-row align-items-center justify-content-start">
+                                                <div class="comment_author_image">
+                                                    <div><img src="{% static 'images/comment_author_1.jpg' %}" alt="">
                                                     </div>
-                                                    <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
-                                                    <button type="button" class="reply_button ml-auto">Reply</button>
                                                 </div>
-                                                <div class="comment_content">
-                                                    <p>Nulla facilisi. Aenean porttitor quis tortor id tempus. Interdum
-                                                        et malesuada fames ac ante ipsum primis in faucibus. Vivamus
-                                                        molestie varius tincidunt. Vestibulum congue sed libero ac
-                                                        sodales.</p>
-                                                </div>
+                                                <small class="post_meta">
+                                                    <a href="#">{{ comment.user.username }}</a>
+                                                    <span>{{ comment.created }}</span>
+                                                    <span>{{ forloop.counter }} comment</span>
+                                                </small>
+                                                <button type="button" class="reply_button ml-auto">Reply</button>
                                             </div>
-
-                                            <!-- Reply -->
-                                            <ul class="comment_list">
-
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li class="comment">
-                                    <div class="comment_body">
-                                        <div class="comment_panel d-flex flex-row align-items-center justify-content-start">
-                                            <div class="comment_author_image">
-                                                <div><img src="{% static 'images/comment_author_1.jpg' %}" alt=""></div>
+                                            <div class="comment_content">
+                                                <p>{{ comment.body|linebreaks }}</p>
                                             </div>
-                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
-                                            <button type="button" class="reply_button ml-auto">Reply</button>
                                         </div>
-                                        <div class="comment_content">
-                                            <p>Pick the yellow peach that looks like a sunset with its red, orange, and
-                                                pink coat skin, peel it off with your teeth. Sink them into
-                                                unripened.</p>
-                                        </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                {% empty %}
+                                    <p>There are no comments yet.</p>
+                                {% endfor %}
+
                             </ul>
                         </div>
                     </div>
