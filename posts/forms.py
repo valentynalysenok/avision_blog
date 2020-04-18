@@ -10,8 +10,8 @@ class PostForm(forms.ModelForm):
         fields = ('title', 'body')
 
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control mt-2'}),
-            'body': forms.Textarea(attrs={'class': 'form-control mt-2'}),
+            'title': forms.TextInput(attrs={'class': 'form-control mt-2', 'placeholder': 'Title'}),
+            'body': forms.Textarea(attrs={'class': 'form-control mt-2', 'placeholder': 'Content'}),
         }
 
     def clean_slug(self):
