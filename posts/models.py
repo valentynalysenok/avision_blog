@@ -1,3 +1,5 @@
+from taggit.managers import TaggableManager
+
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -15,6 +17,7 @@ class Post(models.Model):
     slug = models.SlugField(max_length=250, unique_for_date='publish')
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     body = models.TextField()
+    tags = TaggableManager()
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

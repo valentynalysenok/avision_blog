@@ -3,13 +3,18 @@
 <div class="page_content">
     <div class="container">
         <div class="row row-lg-eq-height">
-
             <!-- Main Content -->
 
             <div class="col-lg-9">
                 <div class="main_content">
-                    <!-- Messages -->
+                    <!-- Messages vs Tags -->
                     <div class="container">
+                        {% if tag %}
+                            <h3 class="text-center mt-5" style="font-family: 'Ubuntu', sans-serif;">
+                                Posts tagged with
+                                <span class="badge badge-secondary">#{{ tag.name }}</span>
+                            </h3>
+                        {% endif %}
                         {% if messages %}
                             <ul class="alert alert-success" style="list-style-type: none;">
                                 {% for message in messages %}

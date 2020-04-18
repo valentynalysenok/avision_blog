@@ -5,9 +5,10 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView, TemplateView, DetailView
+from taggit.models import Tag
 
 from .forms import PostForm, EmailPostForm, CommentForm
-from .models import Post, Comment
+from .models import Post
 from .utils import send_email
 
 
@@ -16,15 +17,25 @@ class BlogView(TemplateView):
 
 
 class PostListView(ListView):
-    queryset = Post.objects.filter(status='published')
     context_object_name = 'posts'
     template_name = 'posts.html'
     paginate_by = 3
 
+    def get_queryset(self, **kwargs):
+        posts = Post.objects.filter(status='published')
+        try:
+            if self.kwargs['tag_slug']:
+                tag = Tag.objects.get(slug=self.kwargs.get('tag_slug'))
+                posts = Post.objects.filter(tags__in=[tag], status='published')
+                return posts
+        except KeyError:
+            return posts
+
     def get_context_data(self, **kwargs):
-        """Pagination for posts list view"""
+        """With pagination for posts list view"""
         context = super(PostListView, self).get_context_data(**kwargs)
         posts = self.get_queryset()
+
         page = self.request.GET.get('page')
         paginator = Paginator(posts, self.paginate_by)
         try:
@@ -34,6 +45,8 @@ class PostListView(ListView):
         except EmptyPage:
             posts = paginator.page(paginator.num_pages)
         context['posts'] = posts
+        if self.kwargs.get('tag_slug'):
+            context['tag'] = Tag.objects.get(slug=self.kwargs.get('tag_slug'))
         return context
 
 

@@ -56,10 +56,11 @@
                             <div class="tags_share d-flex flex-row align-items-center justify-content-start">
                                 <div class="post_tags">
                                     <ul>
-                                        <li class="post_tag"><a href="#">Liberty</a></li>
-                                        <li class="post_tag"><a href="#">Manual</a></li>
-                                        <li class="post_tag"><a href="#">Interpretation</a></li>
-                                        <li class="post_tag"><a href="#">Recommendation</a></li>
+                                        {% for tag in post.tags.all %}
+                                            <li class="post_tag">
+                                                <a href="{% url "posts:posts_list_by_tag" tag.slug %}">#{{ tag }}</a>
+                                            </li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="post_share ml-sm-auto">
