@@ -10,8 +10,8 @@ class PostForm(forms.ModelForm):
         fields = ('title', 'body')
 
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'body': forms.Textarea(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control mt-2'}),
+            'body': forms.Textarea(attrs={'class': 'form-control mt-2'}),
         }
 
     def clean_slug(self):
@@ -19,3 +19,11 @@ class PostForm(forms.ModelForm):
         if new_slug == 'create':
             raise ValidationError('Slug may not be "Create"')
         return new_slug
+
+
+class EmailPostForm(forms.Form):
+    name = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'class': 'form-control mt-2', 'placeholder': 'Name'}))
+    email_to = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control mt-2', 'placeholder': 'Email To'}))
+    email_from = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control mt-2', 'placeholder': 'Email From'}))
+    comments = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control mt-2',
+                                                                            'placeholder': 'Type Your Comment here...'}))

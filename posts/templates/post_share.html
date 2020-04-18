@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Share Post "{{ post.title|title }}"</title>
+{% endblock %}
+
+{% block content %}
+    <div class="home">
+        <div class="home_background parallax-window" data-parallax="scroll"
+             style="background-image:url(https://www.gessato.com/wp-content/uploads/2017/08/modern-bicycle-design-yee-bike-3.jpg);"
+             data-speed="0.8">
+        </div>
+
+        <div class="home_content" style="max-width: 1200px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 offset-lg-3">
+                        <div class="post_comment">
+                            <div class="contact_form_container">
+                                <div>
+                                    {% if sent %}
+                                        <h1>Email successfully sent</h1>
+                                        <p>
+                                            Post "{{ post.title }}" was successfully sent
+                                            to {{ form.cleaned_data.email_to }}.
+                                        </p>
+                                    {% else %}
+                                        <form action="." method="post">
+                                            <div class="form-group">
+                                                {% csrf_token %}
+                                                {% for field in form %}
+                                                    <div>
+                                                        {{ field.errors }}
+                                                        {{ field }}
+                                                    </div>
+                                                {% endfor %}
+                                                <button type="submit" name="button" class="contact_button">
+                                                    Share
+                                                </button>
+                                            </div>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

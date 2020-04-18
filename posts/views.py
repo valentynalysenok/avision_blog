@@ -1,13 +1,15 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.mail import send_mail
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView, TemplateView, DetailView
 
-from .forms import PostForm
+from .forms import PostForm, EmailPostForm
 from .models import Post
+from .utils import send_email
 
 
 class BlogView(TemplateView):
@@ -95,3 +97,28 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
             messages.error(request, 'Restricted access. You are not owner of this post.')
             return redirect(obj)
         return super(PostDeleteView, self).dispatch(request, *args, **kwargs)
+
+
+def post_share(request, slug):
+    form = EmailPostForm()
+    post = get_object_or_404(Post, slug=slug, status='published')
+    sent = False
+    if request.method == 'POST':
+        form = EmailPostForm(request.POST)
+        if form.is_valid():
+            cd = form.cleaned_data
+            # name = form.cleaned_data.get('name')
+            # email_from = form.cleaned_data.get('email_from')
+            # email_to = form.cleaned_data.get('email_to')
+            post_url = request.build_absolute_uri(post.get_absolute_url())
+            subject = f"Avision Blog - {cd.get('name')} recommends you reading {post.title}"
+            message = f"Read {post.title} at {post_url} with {cd.get('name')}'s comments:\n " \
+                      f"{cd.get('comments')} \n" \
+                      f"sender email: {cd.get('email_from')}"
+            send_email(subject, message, (cd.get('email_to'),))
+            sent = True
+    return render(request, 'post_share.html', {
+        'post': post,
+        'form': form,
+        'sent': sent
+    })
