@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -20,7 +21,7 @@ class BlogView(TemplateView):
 class PostListView(ListView):
     context_object_name = 'posts'
     template_name = 'posts.html'
-    paginate_by = 3
+    paginate_by = settings.POSTS_PER_PAGE
 
     def get_queryset(self, **kwargs):
         posts = Post.objects.filter(status='published')
@@ -55,7 +56,7 @@ class PostListUserView(ListView):
     model = Post
     context_object_name = 'posts'
     template_name = 'posts_owner.html'
-    paginate_by = 3
+    paginate_by = settings.POSTS_PER_PAGE
 
     def get_queryset(self):
         return self.model.objects.filter(author=self.request.user, status='published')
@@ -74,11 +75,14 @@ class PostDetailsView(DetailView):
         post_tags_ids = post.tags.values_list('id', flat=True)
         similar_posts = self.model.objects.filter(tags__in=post_tags_ids, status='published')\
             .exclude(id=post.id)
-        similar_posts = similar_posts.annotate(same_tags=Count('tags'))\
-            .order_by('-same_tags', '-publish')[:12]
+        similar_posts_to = similar_posts.annotate(same_tags=Count('tags'))\
+            .order_by('-same_tags', '-publish')[:4]
+        similar_posts_from = similar_posts.annotate(same_tags=Count('tags')) \
+            .order_by('-same_tags', '-publish')[4:]
 
         context['comments'] = post.comments.filter(active=True)
-        context['similar_posts'] = similar_posts
+        context['similar_posts_to'] = similar_posts_to
+        context['similar_posts_from'] = similar_posts_from
         context['form'] = CommentForm()
         return context
 

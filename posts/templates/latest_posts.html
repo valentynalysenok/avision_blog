@@ -1,0 +1,21 @@
+{% load static %}
+
+{% for post in latest_posts %}
+    <div class="side_post">
+        <a href="{{ post.get_absolute_url }}">
+            <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                <div class="side_post_image">
+                    <div><img src="{% static 'images/vid_1.jpg' %}" alt=""></div>
+                </div>
+                <div class="side_post_content">
+                    <div class="side_post_title">
+                        <p style="color: black;">{{ post.title }}</p>
+                    </div>
+                    <small class="post_meta">{{ post.author }}
+                        <span>{{ post.publish }}</span>
+                    </small>
+                </div>
+            </div>
+        </a>
+    </div>
+{% endfor %}

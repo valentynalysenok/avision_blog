@@ -13,3 +13,10 @@ Basic models:<br />
     - Send email to an author when the comment was added
 - Tags by using **django_taggit**
 - **Recommendation** system of posts (list of similar posts)
+
+Other functionality:<br />
+- Created custom **Template Tags** 
+    - {% load blog_tags %} {% total_posts %}
+    - {% show_latest_posts %}
+    - {% get_most_commented_posts %}
+- Created custom **Filters**

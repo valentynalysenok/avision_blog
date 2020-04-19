@@ -39,7 +39,7 @@
                 <div class="owl-item">
                     <div class="item active">
                         <div class="row">
-                            {% for similar_post in similar_posts %}
+                            {% for similar_post in similar_posts_to %}
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                     <div class="card text-center">
                                         <img class="card-img-top" src="{% static 'images/post_4.jpg' %}">
@@ -57,6 +57,29 @@
                             {% endfor %}
                         </div> <!-- row -->
                     </div> <!-- item -->
+                </div>
+
+                <div class="owl-item">
+                    <div class="item active">
+                        <div class="row">
+                            {% for similar_post in similar_posts_from %}
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <div class="card text-center">
+                                        <img class="card-img-top" src="{% static 'images/post_4.jpg' %}">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small">
+                                                <a href="{{ similar_post.get_absolute_url }}">{{ similar_post.title }}</a>
+                                            </div>
+                                            <small class="post_meta">
+                                                <a href="#">{{ similar_post.author }}</a>
+                                                <span>{{ similar_post.publish }}</span>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
 
             </div>
