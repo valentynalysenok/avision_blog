@@ -4,6 +4,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
+from django.db.models import Count
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView, TemplateView, DetailView
 from taggit.models import Tag
 
@@ -68,7 +69,16 @@ class PostDetailsView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         post = self.model.objects.get(slug=self.kwargs.get('slug'))
+
+        # get list of similar posts
+        post_tags_ids = post.tags.values_list('id', flat=True)
+        similar_posts = self.model.objects.filter(tags__in=post_tags_ids, status='published')\
+            .exclude(id=post.id)
+        similar_posts = similar_posts.annotate(same_tags=Count('tags'))\
+            .order_by('-same_tags', '-publish')[:12]
+
         context['comments'] = post.comments.filter(active=True)
+        context['similar_posts'] = similar_posts
         context['form'] = CommentForm()
         return context
 

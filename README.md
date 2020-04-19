@@ -12,3 +12,4 @@ Basic models:<br />
 - Comment (made by a registered user)<br />
     - Send email to an author when the comment was added
 - Tags by using **django_taggit**
+- **Recommendation** system of posts (list of similar posts)

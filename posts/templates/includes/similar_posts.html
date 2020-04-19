@@ -1,0 +1,66 @@
+{% load static %}
+
+<div class="sidebar_section mt-5">
+    <div class="sidebar_title_container">
+        <div class="sidebar_title text-center">Similar Posts</div>
+        <div class="sidebar_slider_nav mr-3">
+            <div class="custom_nav_container sidebar_slider_nav_container">
+                <div class="custom_prev custom_prev_top">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                         width="7px" height="12px" viewBox="0 0 7 12"
+                         enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe"
+                                                          points="0,5.61 5.609,0 7,0 7,1.438 2.438,6 7,10.563 7,12 5.609,12 -0.002,6.39 "/>
+											</svg>
+                </div>
+                <ul id="custom_dots" class="custom_dots custom_dots_top">
+                    <li class="custom_dot custom_dot_top active"><span></span></li>
+                    <li class="custom_dot custom_dot_top"><span></span></li>
+                    <li class="custom_dot custom_dot_top"><span></span></li>
+                </ul>
+                <div class="custom_next custom_next_top">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                         width="7px" height="12px" viewBox="0 0 7 12"
+                         enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe"
+                                                          points="6.998,6.39 1.389,12 -0.002,12 -0.002,10.562 4.561,6 -0.002,1.438 -0.002,0 1.389,0 7,5.61 "/>
+											</svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Similar Posts -->
+    <div class="container">
+        <div class="sidebar_slider_container">
+            <div class="owl-carousel owl-theme sidebar_slider_top">
+
+                <!-- Similar Posts Slider Item -->
+                <div class="owl-item">
+                    <div class="item active">
+                        <div class="row">
+                            {% for similar_post in similar_posts %}
+                                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                    <div class="card text-center">
+                                        <img class="card-img-top" src="{% static 'images/post_4.jpg' %}">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small">
+                                                <a href="{{ similar_post.get_absolute_url }}">{{ similar_post.title }}</a>
+                                            </div>
+                                            <small class="post_meta">
+                                                <a href="#">{{ similar_post.author }}</a>
+                                                <span>{{ similar_post.publish }}</span>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div> <!-- row -->
+                    </div> <!-- item -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

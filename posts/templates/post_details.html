@@ -95,68 +95,12 @@
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-lg-6 offset-lg-3">
+            {% include 'includes/similar_posts.html' %}
 
-                    <!-- Post Comment -->
-                    <div class="post_comment">
-                        <div class="post_comment_title">Post Comment</div>
-                        <div class="post_comment_form_container">
-                            {% if comment %}
-                                <h2>Your comment has been added.</h2>
-                            {% else %}
-                                <form action="." method="post">
-                                    {% csrf_token %}
-                                    {% for field in form %} {{ field }} {% endfor %}
-                                    <button type="submit" class="comment_button">Post Comment</button>
-                                </form>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <!-- Comments -->
-                    <div class="comments">
-                        <div class="comments_title">
-                            {% with comments.count as total_comments %}
-                                Comment{{ total_comments|pluralize }} <span>({{ total_comments }})</span>
-                            {% endwith %}
-                        </div>
-                        <div class="comments_container">
-                            <ul class="comment_list">
-
-                                {% for comment in comments %}
-                                    <li class="comment">
-                                        <div class="comment_body">
-                                            <div class="comment_panel d-flex flex-row align-items-center justify-content-start">
-                                                <div class="comment_author_image">
-                                                    <div><img src="{% static 'images/comment_author_1.jpg' %}" alt="">
-                                                    </div>
-                                                </div>
-                                                <small class="post_meta">
-                                                    <a href="#">{{ comment.user.username }}</a>
-                                                    <span>{{ comment.created }}</span>
-                                                    <span>{{ forloop.counter }} comment</span>
-                                                </small>
-                                                <button type="button" class="reply_button ml-auto">Reply</button>
-                                            </div>
-                                            <div class="comment_content">
-                                                <p>{{ comment.body|linebreaks }}</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                {% empty %}
-                                    <p>There are no comments yet.</p>
-                                {% endfor %}
-
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="load_more">
-                        <div id="load_more" class="load_more_button text-center trans_200">Load More</div>
-                    </div>
-                </div>
-            </div>
         </div>
+
+        {% include 'includes/comments.html' %}
+
     </div>
 
     {% block sidebar %}{% endblock %}
