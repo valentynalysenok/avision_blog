@@ -14,6 +14,21 @@ def total_posts():
     return Post.objects.filter(status='published').count()
 
 
+@register.simple_tag
+def get_latest_posts(count=3):
+    return Post.objects.filter(status='published') \
+               .order_by('-publish')[:count]
+
+
+@register.simple_tag
+def get_similar_posts(post, count=3):
+    post_tags_ids = post.tags.values_list('id', flat=True)
+    similar_posts = Post.objects.filter(tags__in=post_tags_ids, status='published') \
+        .exclude(id=post.id)
+    return similar_posts.annotate(same_tags=Count('tags')) \
+               .order_by('-same_tags', '-publish')[:count]
+
+
 @register.inclusion_tag('most_commented_posts.html')
 def get_most_commented_posts_to(count=settings.COUNT_POSTS):
     most_commented_posts = Post.objects.filter(status='published').annotate(total_comments=Count('comments')) \
