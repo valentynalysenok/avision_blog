@@ -22,3 +22,4 @@ Other functionality:<br />
 - Created custom **Filters**
     - **Markdown** view
 - Added Site Map **PostSitemap**
+- **RSS feed** for posts

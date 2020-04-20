@@ -1,5 +1,7 @@
 from django.urls import path
 
+from .feeds import LatestPostsFeed
+
 from .views import PostListView, PostListUserView, PostDetailsView
 from .views import PostCreateView, PostUpdateView, PostDeleteView
 from .views import post_share
@@ -13,5 +15,7 @@ urlpatterns = [
     path('post/<str:slug>/delete/', PostDeleteView.as_view(), name='delete_post'),
     path('post/<str:slug>/share/', post_share, name='share_post'),
     path('tag/<slug:tag_slug>/', PostListView.as_view(), name='posts_list_by_tag'),
+
+    path('feed/', LatestPostsFeed(), name='post_feed'),
 
 ]
