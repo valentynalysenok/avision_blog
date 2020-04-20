@@ -17,10 +17,14 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 
+from posts.sitemaps import PostSitemap
 from posts.views import BlogView
 from .views import about, contact
+
+sitemaps = {'posts': PostSitemap, }
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,7 +37,10 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
 
     path('about/', about, name='about'),
-    path('contact/', contact, name='contact')
+    path('contact/', contact, name='contact'),
+
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
+         name='django.contrib.sitemaps.views.sitemap'),
 ]
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

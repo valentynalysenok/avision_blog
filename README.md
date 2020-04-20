@@ -21,3 +21,4 @@ Other functionality:<br />
     - {% get_most_commented_posts %}
 - Created custom **Filters**
     - **Markdown** view
+- Added Site Map **PostSitemap**
