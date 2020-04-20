@@ -14,6 +14,7 @@ Basic models:<br />
 - Category (post categorization)
 - Tags by using **django_taggit**
 - **Recommendation** system of posts (list of similar posts)
+- **Like vs Dislike** for registered user
 
 Other functionality:<br />
 - Created custom **Template Tags** 
