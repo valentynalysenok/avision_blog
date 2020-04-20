@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load social_share %}
+{% load blog_tags %}
 
 {% block title %}
     <title>Post Details</title>
@@ -89,7 +90,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <p class="post_p">{{ post.body|linebreaks }}</p>
+                            <p class="post_p">{{ post.body|markdown }}</p>
                         </div>
                     </div>
                 </div>

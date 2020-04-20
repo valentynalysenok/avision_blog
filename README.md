@@ -20,3 +20,4 @@ Other functionality:<br />
     - {% show_latest_posts %}
     - {% get_most_commented_posts %}
 - Created custom **Filters**
+    - **Markdown** view

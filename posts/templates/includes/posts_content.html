@@ -1,5 +1,10 @@
 {% load static %}
-
+{% load blog_tags %}
+<style>
+    body {
+        color: black;
+    }
+</style>
 <div class="page_content">
     <div class="container">
         <div class="row row-lg-eq-height">
@@ -28,32 +33,7 @@
                     <!-- Category -->
 
                     <div class="category">
-                        <div class="section_panel d-flex flex-row align-items-center justify-content-start">
-                            <div class="section_title">Don't Miss</div>
-                            <div class="section_tags ml-auto">
-                                <ul>
-                                    <li class="active"><a href="posts.html">all</a></li>
-                                    <li><a href="posts.html">style hunter</a></li>
-                                    <li><a href="posts.html">vogue</a></li>
-                                    <li><a href="posts.html">health & fitness</a></li>
-                                    <li><a href="posts.html">travel</a></li>
-                                </ul>
-                            </div>
-                            <div class="section_panel_more">
-                                <ul>
-                                    <li>more
-                                        <ul>
-                                            <li><a href="posts.html">new look 2018</a></li>
-                                            <li><a href="posts.html">street fashion</a></li>
-                                            <li><a href="posts.html">business</a></li>
-                                            <li><a href="posts.html">recipes</a></li>
-                                            <li><a href="posts.html">sport</a></li>
-                                            <li><a href="posts.html">celebrities</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+
                         <div class="section_content">
 
                             {% for post in posts %}
@@ -64,7 +44,7 @@
                                             <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
                                         </div>
                                         <div class="card-title card-title-small">
-                                            <p>{{ post.body | truncatewords:10 }}</p>
+                                            <p>{{ post.body|markdown|truncatewords_html:30 }}</p>
                                         </div>
                                         <small class="post_meta">
                                             <a href="#">{{ post.author }}</a>
