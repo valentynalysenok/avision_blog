@@ -4,7 +4,7 @@ from .feeds import LatestPostsFeed
 
 from .views import PostListView, PostListUserView, PostDetailsView
 from .views import PostCreateView, PostUpdateView, PostDeleteView
-from .views import post_share
+from .views import post_share, post_search
 
 urlpatterns = [
     path('posts/', PostListView.as_view(), name='posts_list'),
@@ -17,5 +17,6 @@ urlpatterns = [
     path('tag/<slug:tag_slug>/', PostListView.as_view(), name='posts_list_by_tag'),
 
     path('feed/', LatestPostsFeed(), name='post_feed'),
+    path('search/', post_search, name='post_search'),
 
 ]

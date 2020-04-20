@@ -2,14 +2,16 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.postgres.search import TrigramSimilarity
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.db.models import Count
+from django.db.models.functions import Greatest
 from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
-from django.db.models import Count
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView, TemplateView, DetailView
 from taggit.models import Tag
 
-from .forms import PostForm, EmailPostForm, CommentForm
+from .forms import PostForm, EmailPostForm, CommentForm, SearchForm
 from .models import Post
 from .utils import send_email
 
@@ -73,12 +75,12 @@ class PostDetailsView(DetailView):
 
         # get list of similar posts
         post_tags_ids = post.tags.values_list('id', flat=True)
-        similar_posts = self.model.objects.filter(tags__in=post_tags_ids, status='published')\
+        similar_posts = self.model.objects.filter(tags__in=post_tags_ids, status='published') \
             .exclude(id=post.id)
-        similar_posts_to = similar_posts.annotate(same_tags=Count('tags'))\
-            .order_by('-same_tags', '-publish')[:4]
+        similar_posts_to = similar_posts.annotate(same_tags=Count('tags')) \
+                               .order_by('-same_tags', '-publish')[:4]
         similar_posts_from = similar_posts.annotate(same_tags=Count('tags')) \
-            .order_by('-same_tags', '-publish')[4:]
+                                 .order_by('-same_tags', '-publish')[4:]
 
         context['comments'] = post.comments.filter(active=True)
         context['similar_posts_to'] = similar_posts_to
@@ -164,3 +166,20 @@ def post_share(request, slug):
         'form': form,
         'sent': sent
     })
+
+
+def post_search(request):
+    form = SearchForm()
+    query = None
+    results = []
+    if 'query' in request.GET:
+        form = SearchForm(request.GET)
+        if form.is_valid():
+            query = form.cleaned_data['query']
+            results = Post.objects.annotate(
+                similarity=Greatest(TrigramSimilarity('title', query), TrigramSimilarity('body', query))) \
+                .filter(similarity__gt=0.3) \
+                .order_by('-similarity')
+    return render(request, 'post_search.html', {'form': form,
+                                                'query': query,
+                                                'results': results})

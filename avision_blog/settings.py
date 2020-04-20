@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     'django.contrib.sites',
     'django.contrib.sitemaps',
+    'django.contrib.postgres',
 
     'social_share_templates',
     'django_social_share',

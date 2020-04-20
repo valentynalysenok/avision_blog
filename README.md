@@ -23,3 +23,4 @@ Other functionality:<br />
     - **Markdown** view
 - Added Site Map **PostSitemap**
 - **RSS feed** for posts
+- Search posts using **TrigramSimilarity** from PostgreSQL

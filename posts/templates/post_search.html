@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% load blog_tags %}
+
+{% block title %}
+    <title>Search</title>
+{% endblock %}
+
+{% block content %}
+    <div class="home">
+        <div class="home_background parallax-window" data-parallax="scroll"
+             style="background-image:url(https://www.gessato.com/wp-content/uploads/2017/08/modern-bicycle-design-yee-bike-3.jpg);"
+             data-speed="0.8">
+        </div>
+
+        <div class="home_content" style="max-width: 1200px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 offset-lg-3">
+                        <!-- Post Searching -->
+                        <div class="post_comment">
+                            <div class="contact_form_container">
+                                <div class="text-left">
+                                    {% if query %}
+                                        <h4>Posts containing "{{ query }}"</h4>
+                                        <h3>
+                                            {% with results.count as total_results %}
+                                                Found {{ total_results }} result{{ total_results|pluralize }}
+                                            {% endwith %}
+                                        </h3>
+                                        {% for post in results %}
+                                            <h4><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h4>
+                                            <p>{{ post.body|markdown|truncatewords_html:10 }}</p>
+                                        {% empty %}
+                                            <p>There are no results for your query.</p>
+                                        {% endfor %}
+                                        <p><a href="{% url "posts:post_search" %}">Search again</a></p>
+                                    {% else %}
+                                        <form action="." method="get">
+                                            {% for field in form %}
+                                                {{ field }}
+                                            {% endfor %}
+                                            <button type="submit" class="contact_button">Search</button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
