@@ -152,70 +152,74 @@
                     {% get_latest_posts as latest_posts %}
 
                     {% for post in latest_posts %}
-                    <div class="owl-item">
-                        <div class="home_slider_background"
-                             style="background-image:url(../static/images/home_slider.jpg)"></div>
-                        <div class="home_slider_content_container">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="home_slider_content">
-                                            <div class="home_slider_item_category trans_200">
-                                                <a href="#" class="trans_200">sport</a>
-                                            </div>
-                                            <div class="home_slider_item_title">
-                                                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-                                            </div>
-                                            <div class="home_slider_item_link">
-                                                <a href="{{ post.get_absolute_url }}" class="trans_200">Continue Reading
-                                                    <svg version="1.1" id="link_arrow_1"
-                                                         xmlns="http://www.w3.org/2000/svg"
-                                                         x="0px" y="0px"
-                                                         width="19px" height="13px" viewBox="0 0 19 13"
-                                                         enable-background="new 0 0 19 13" xml:space="preserve">
+                        <div class="owl-item">
+                            <div class="home_slider_background">
+                                <img src="{{ post.image.url }}" alt="">
+                            </div>
+                            <div class="home_slider_content_container">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="home_slider_content">
+                                                <h3>
+                                                    <a href="{% url "posts:posts_list_by_category" post.category %}"
+                                                       class="badge badge-secondary">
+                                                        {{ post.category }}</a>
+                                                </h3>
+                                                <div class="home_slider_item_title">
+                                                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                                                </div>
+                                                <div class="home_slider_item_link">
+                                                    <a href="{{ post.get_absolute_url }}" class="trans_200">Continue
+                                                        Reading
+                                                        <svg version="1.1" id="link_arrow_1"
+                                                             xmlns="http://www.w3.org/2000/svg"
+                                                             x="0px" y="0px"
+                                                             width="19px" height="13px" viewBox="0 0 19 13"
+                                                             enable-background="new 0 0 19 13" xml:space="preserve">
 													<polygon fill="#FFFFFF"
                                                              points="12.475,0 11.061,0 17.081,6.021 0,6.021 0,7.021 17.038,7.021 11.06,13 12.474,13 18.974,6.5 "/>
 												</svg>
-                                                </a>
+                                                    </a>
+                                                </div>
                                             </div>
+
                                         </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Similar Posts -->
-                        <div class="similar_posts_container">
-                            <div class="container">
-                                <div class="row d-flex flex-row align-items-end">
-
-                                    <!-- Similar Post -->
-                                    {% get_similar_posts post 3 as similar_posts %}
-
-                                    {% for post in similar_posts %}
-                                        <div class="col-lg-3 col-md-6 similar_post_col">
-                                            <div class="similar_post trans_200">
-                                                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-
-                                </div>
-                            </div>
-
-                            <div class="home_slider_next_container">
-                                <div class="home_slider_next"
-                                     style="background-image:url(../static/images/home_slider_next.jpg)">
-                                    <div class="home_slider_next_background trans_400"></div>
-                                    <div class="home_slider_next_content trans_400">
-                                        <div class="home_slider_next_link">NEXT</div>
                                     </div>
                                 </div>
                             </div>
 
+                            <!-- Similar Posts -->
+                            <div class="similar_posts_container">
+                                <div class="container">
+                                    <div class="row d-flex flex-row align-items-end">
+
+                                        <!-- Similar Post -->
+                                        {% get_similar_posts post 3 as similar_posts %}
+
+                                        {% for post in similar_posts %}
+                                            <div class="col-lg-3 col-md-6 similar_post_col">
+                                                <div class="similar_post trans_200">
+                                                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+
+                                <div class="home_slider_next_container">
+                                    <div class="home_slider_next"
+                                         style="background-image:url(../static/images/spaceman.jpg)">
+                                        <div class="home_slider_next_background trans_400"></div>
+                                        <div class="home_slider_next_content trans_400">
+                                            <div class="home_slider_next_link">NEXT</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-                    </div>
                     {% endfor %}
 
                 </div>
@@ -264,30 +268,33 @@
                                         <div class="section_title">Don't Miss</div>
                                         <div class="section_tags ml-auto">
                                             <ul>
-                                                <li class="active"><a href="posts.html">all</a></li>
-                                                <li><a href="posts.html">style hunter</a></li>
-                                                <li><a href="posts.html">vogue</a></li>
-                                                <li><a href="posts.html">health & fitness</a></li>
-                                                <li><a href="posts.html">travel</a></li>
+                                                <li class="active"><a href="{% url "posts:posts_list" %}">all</a></li>
+                                                {% get_categories_to as categories_to %}
+                                                {% for category in categories_to %}
+                                                    <li><a href="{% url 'posts:posts_list_by_category' category %}">
+                                                        {{ category }}
+                                                    </a></li>
+                                                {% endfor %}
                                             </ul>
                                         </div>
                                         <div class="section_panel_more">
                                             <ul>
                                                 <li>more
                                                     <ul>
-                                                        <li><a href="posts.html">new look 2018</a></li>
-                                                        <li><a href="posts.html">street fashion</a></li>
-                                                        <li><a href="posts.html">business</a></li>
-                                                        <li><a href="posts.html">recipes</a></li>
-                                                        <li><a href="posts.html">sport</a></li>
-                                                        <li><a href="posts.html">celebrities</a></li>
+                                                        {% get_categories_from as categories_from %}
+                                                        {% for category in categories_from %}
+                                                            <li>
+                                                                <a href="{% url 'posts:posts_list_by_category' category %}">
+                                                                    {{ category }}
+                                                                </a></li>
+                                                        {% endfor %}
                                                     </ul>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="post_body">
+                                <div class="post_body mt-5">
                                     <h3 class="mt-1">
                                         <p class="badge badge-success">Avision Blog. We've written {% total_posts %}
                                             posts so far.</p>

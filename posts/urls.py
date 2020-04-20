@@ -15,6 +15,7 @@ urlpatterns = [
     path('post/<str:slug>/delete/', PostDeleteView.as_view(), name='delete_post'),
     path('post/<str:slug>/share/', post_share, name='share_post'),
     path('tag/<slug:tag_slug>/', PostListView.as_view(), name='posts_list_by_tag'),
+    path('category/<str:category>/', PostListView.as_view(), name='posts_list_by_category'),
 
     path('feed/', LatestPostsFeed(), name='post_feed'),
     path('search/', post_search, name='post_search'),

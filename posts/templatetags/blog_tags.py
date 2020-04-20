@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db.models import Count
 from django.utils.safestring import mark_safe
 
-from ..models import Post
+from ..models import Post, Category
 
 register = template.Library()
 
@@ -27,6 +27,16 @@ def get_similar_posts(post, count=3):
         .exclude(id=post.id)
     return similar_posts.annotate(same_tags=Count('tags')) \
                .order_by('-same_tags', '-publish')[:count]
+
+
+@register.simple_tag
+def get_categories_to(count=4):
+    return Category.objects.all()[:count]
+
+
+@register.simple_tag
+def get_categories_from(count=4):
+    return Category.objects.all()[count:]
 
 
 @register.inclusion_tag('most_commented_posts.html')

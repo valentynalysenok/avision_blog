@@ -42,7 +42,7 @@
                             {% for similar_post in similar_posts_to %}
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                     <div class="card text-center">
-                                        <img class="card-img-top" src="{% static 'images/post_4.jpg' %}">
+                                        <img class="card-img-top" src="{{ similar_post.image.url }}">
                                         <div class="card-body">
                                             <div class="card-title card-title-small">
                                                 <a href="{{ similar_post.get_absolute_url }}">{{ similar_post.title }}</a>
@@ -65,7 +65,7 @@
                             {% for similar_post in similar_posts_from %}
                                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                                     <div class="card text-center">
-                                        <img class="card-img-top" src="{% static 'images/post_4.jpg' %}">
+                                        <img class="card-img-top" src="{{ similar_post.image.url }}">
                                         <div class="card-body">
                                             <div class="card-title card-title-small">
                                                 <a href="{{ similar_post.get_absolute_url }}">{{ similar_post.title }}</a>

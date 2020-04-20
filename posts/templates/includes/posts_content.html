@@ -1,10 +1,6 @@
 {% load static %}
 {% load blog_tags %}
-<style>
-    body {
-        color: black;
-    }
-</style>
+
 <div class="page_content">
     <div class="container">
         <div class="row row-lg-eq-height">
@@ -14,12 +10,21 @@
                 <div class="main_content">
                     <!-- Messages vs Tags -->
                     <div class="container">
+
                         {% if tag %}
                             <h3 class="text-center mt-5" style="font-family: 'Ubuntu', sans-serif; color: black;">
                                 Posts tagged with
                                 <span class="badge badge-success">#{{ tag.name }}</span>
                             </h3>
                         {% endif %}
+
+                        {% if category %}
+                            <h3 class="text-center mt-5" style="font-family: 'Ubuntu', sans-serif; color: black;">
+                                Posts by category
+                                <span class="badge badge-success">{{ category.title }}</span>
+                            </h3>
+                        {% endif %}
+
                         {% if messages %}
                             <ul class="alert alert-success" style="list-style-type: none;">
                                 {% for message in messages %}
@@ -30,7 +35,7 @@
                         {% endif %}
                     </div>
 
-                    <!-- Category -->
+                    <!-- Posts List -->
 
                     <div class="category">
 
@@ -38,7 +43,7 @@
 
                             {% for post in posts %}
                                 <div class="card mb-4">
-                                    <img class=" card-img-top" src="{% static 'images/post_10.jpg' %}" alt="">
+                                    <img class=" card-img-top" src="{{ post.image.url }}" alt="">
                                     <div class="card-body">
                                         <div class="card-title card-title-small">
                                             <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
@@ -52,6 +57,8 @@
                                         </small>
                                     </div>
                                 </div>
+                            {% empty %}
+                                <h3>There are no posts yet.</h3>
                             {% endfor %}
 
                         </div>

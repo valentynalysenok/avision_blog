@@ -12,7 +12,7 @@ from django.views.generic import ListView, UpdateView, DeleteView, CreateView, T
 from taggit.models import Tag
 
 from .forms import PostForm, EmailPostForm, CommentForm, SearchForm
-from .models import Post
+from .models import Post, Category
 from .utils import send_email
 
 
@@ -28,8 +28,15 @@ class PostListView(ListView):
     def get_queryset(self, **kwargs):
         posts = Post.objects.filter(status='published')
         try:
+            if self.kwargs['category']:
+                category = get_object_or_404(Category, title=self.kwargs.get('category'))
+                posts = Post.objects.filter(category=category.id, status='published')
+                return posts
+        except KeyError:
+            return posts
+        try:
             if self.kwargs['tag_slug']:
-                tag = Tag.objects.get(slug=self.kwargs.get('tag_slug'))
+                tag = get_object_or_404(Tag, slug=self.kwargs.get('tag_slug'))
                 posts = Post.objects.filter(tags__in=[tag], status='published')
                 return posts
         except KeyError:
@@ -50,7 +57,9 @@ class PostListView(ListView):
             posts = paginator.page(paginator.num_pages)
         context['posts'] = posts
         if self.kwargs.get('tag_slug'):
-            context['tag'] = Tag.objects.get(slug=self.kwargs.get('tag_slug'))
+            context['tag'] = get_object_or_404(Tag, slug=self.kwargs.get('tag_slug'))
+        if self.kwargs.get('category'):
+            context['category'] = get_object_or_404(Category, title=self.kwargs.get('category'))
         return context
 
 

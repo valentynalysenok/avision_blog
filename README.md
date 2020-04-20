@@ -11,6 +11,7 @@ Basic models:<br />
     - Share post by using **django-social-share** (Facebook, LinkedIn, Twitter, Telegram, WhatsApp)
 - Comment (made by a registered user)<br />
     - Send email to an author when the comment was added
+- Category (post categorization)
 - Tags by using **django_taggit**
 - **Recommendation** system of posts (list of similar posts)
 

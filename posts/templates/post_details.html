@@ -12,10 +12,12 @@
 
     <div class="home">
         <div class="home_background parallax-window" data-parallax="scroll" data-speed="0.8">
-            <img src="{% static 'images/post_nosidebar.jpg' %}" alt="">
+            <img src="{{ post.image.url }}" alt="">
         </div>
         <div class="home_content">
-            <div class="post_category trans_200"><a href="posts.html" class="trans_200">sport</a></div>
+            <h3><a href="{% url "posts:posts_list_by_category" post.category %}" class="badge badge-secondary">
+                {{ post.category }}
+            </a></h3>
             <div class="post_title">{{ post.title }}</div>
             <div class="post_author d-flex flex-row align-items-center justify-content-center">
                 <div class="author_image">

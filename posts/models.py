@@ -18,6 +18,8 @@ class Post(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     body = models.TextField()
     tags = TaggableManager()
+    image = models.ImageField(upload_to='posts/', default='posts/post_16.jpg')
+    category = models.ForeignKey('Category', default=1, null=True, on_delete=models.SET_NULL)
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -66,3 +68,17 @@ class Comment(models.Model):
                        f"Comment body: {self.body}",
                        (self.post.author.email,))
         super().save(*args, **kwargs)
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=150)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Category"
+        verbose_name_plural = "Categories"
+        ordering = ('-created',)
+
+    def __str__(self):
+        return f"{self.title}"
