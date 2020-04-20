@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.postgres.search import TrigramSimilarity
@@ -192,3 +193,19 @@ def post_search(request):
     return render(request, 'post_search.html', {'form': form,
                                                 'query': query,
                                                 'results': results})
+
+
+def post_like(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    post.likes.add(request.user)
+    post.dislikes.remove(request.user)
+    post.save()
+    return redirect('posts:post_detail', slug=slug)
+
+
+def post_dislike(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    post.dislikes.add(request.user)
+    post.likes.remove(request.user)
+    post.save()
+    return redirect('posts:post_detail', slug=slug)

@@ -1,8 +1,7 @@
-from taggit.managers import TaggableManager
-
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from taggit.managers import TaggableManager
 
 from users.models import CustomUser
 from .utils import custom_slugify, send_email
@@ -20,6 +19,8 @@ class Post(models.Model):
     tags = TaggableManager()
     image = models.ImageField(upload_to='posts/', default='posts/post_16.jpg')
     category = models.ForeignKey('Category', default=1, null=True, on_delete=models.SET_NULL)
+    likes = models.ManyToManyField(CustomUser, related_name="like_voters")
+    dislikes = models.ManyToManyField(CustomUser, related_name="dislike_voters")
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -41,6 +42,12 @@ class Post(models.Model):
 
     def get_delete_url(self):
         return reverse('posts:delete_post', kwargs={'slug': self.slug})
+
+    def get_like_url(self):
+        return reverse('posts:post_like', kwargs={'slug': self.slug})
+
+    def get_unlike_url(self):
+        return reverse('posts:post_dislike', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.title
@@ -81,4 +88,4 @@ class Category(models.Model):
         ordering = ('-created',)
 
     def __str__(self):
-        return f"{self.title}"
+        return self.title

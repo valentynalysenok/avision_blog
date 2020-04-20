@@ -55,6 +55,7 @@
                         <div class="post_body">
                             <a href="{{ post.get_update_url }}" class="btn btn-outline-warning">Update Post</a>
                             <a href="{{ post.get_delete_url }}" class="btn btn-outline-danger">Delete Post</a>
+
                             <!-- Post Tags and Share-->
                             <div class="tags_share d-flex flex-row align-items-center justify-content-start">
                                 <div class="post_tags">
@@ -93,6 +94,30 @@
                                 </div>
                             </div>
                             <p class="post_p">{{ post.body|markdown }}</p>
+
+                            <div class="col-lg-2 col-md-10 mx-auto">
+                                <div class="col-md-4 mx-auto">
+                                    <div class="row">
+                                        {% if request.user.is_authenticated %}
+                                            <form action="{{ post.get_like_url }}" method="post">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-outline-success m-2">
+                                                    <i class="fa fa-thumbs-up"></i>
+                                                    <span>{{ post.likes.count }}</span>
+                                                </button>
+                                            </form>
+                                            <form action="{{ post.get_unlike_url }}" method="post">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-outline-danger m-2">
+                                                    <i class="fa fa-thumbs-down"></i>
+                                                    <span>{{ post.dislikes.count }}</span>
+                                                </button>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
