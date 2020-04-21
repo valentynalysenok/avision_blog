@@ -50,6 +50,11 @@ and change file name to .env:
 
 `python3 manage.py migrate`
 
+4 - Load data from JSON files:
+
+`python3 manage.py loaddata posts.json`
+`python3 manage.py loaddata users.json`
+
 4 - Run app:
 
 `python3 manage.py runserver`
