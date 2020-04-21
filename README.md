@@ -13,6 +13,7 @@ Basic models:<br />
     - Send email to an author when the comment was added
 - Category (post categorization)
 - Tags by using **django_taggit**
+- Contact (for sent message using contact form)
 - **Recommendation** system of posts (list of similar posts)
 - **Like vs Dislike** for registered user
 
@@ -26,3 +27,29 @@ Other functionality:<br />
 - Added Site Map **PostSitemap**
 - **RSS feed** for posts
 - Search posts using **TrigramSimilarity** from PostgreSQL
+
+## Deploy project on your local machine
+
+1 - To deploy project on your local machine create new virtual environment and execute this command:
+
+`pip install -r requirements.txt`
+
+2 - Insert your own db configuration settings (see example.env):
+and change file name to .env:
+
+`SECRET_KEY`,
+
+`DB_PASSWORD`,
+`DB_NAME`,
+`DB_USER`
+
+`EMAIL_HOST_USER`,
+`EMAIL_HOST_PASSWORD`
+
+3 - Migrate db models to PostgreSQL:
+
+`python3 manage.py migrate`
+
+4 - Run app:
+
+`python3 manage.py runserver`
