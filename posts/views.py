@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.postgres.search import TrigramSimilarity
+from django.contrib.postgres.search import TrigramSimilarity, SearchVector, SearchQuery, SearchRank
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
 from django.db.models.functions import Greatest
@@ -233,10 +233,10 @@ def post_search(request):
         form = SearchForm(request.GET)
         if form.is_valid():
             query = form.cleaned_data['query']
+            search_vector = SearchVector('title', weight='A') + SearchVector('body', weight='B')
+            search_query = SearchQuery(query)
             results = Post.objects.annotate(
-                similarity=Greatest(TrigramSimilarity('title', query), TrigramSimilarity('body', query))) \
-                .filter(similarity__gt=0.3) \
-                .order_by('-similarity')
+                rank=SearchRank(search_vector, search_query)).filter(rank__gte=0.3).order_by('-rank')
     return render(request, 'post_search.html', {'form': form,
                                                 'query': query,
                                                 'results': results})

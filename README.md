@@ -26,7 +26,7 @@ Other functionality:<br />
     - **Markdown** view
 - Added Site Map **PostSitemap**
 - **RSS feed** for posts
-- Search posts using **TrigramSimilarity** from PostgreSQL
+- Search posts using **SearchVector**, **SearchQuery**, **SearchRank** from PostgreSQL
 
 ## Deploy project on your local machine
 
