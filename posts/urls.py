@@ -2,7 +2,7 @@ from django.urls import path
 
 from .feeds import LatestPostsFeed
 
-from .views import PostListView, PostListUserView, PostDetailsView
+from .views import PostListView, PostListUserView, PostDetailsView, PostListViewByCategory
 from .views import PostCreateView, PostUpdateView, PostDeleteView
 from .views import post_share, post_search, post_like, post_dislike
 
@@ -17,7 +17,7 @@ urlpatterns = [
     path('post/<str:slug>/like/', post_like, name="post_like"),
     path('post/<str:slug>/unlike/', post_dislike, name="post_dislike"),
     path('tag/<slug:tag_slug>/', PostListView.as_view(), name='posts_list_by_tag'),
-    path('category/<str:category>/', PostListView.as_view(), name='posts_list_by_category'),
+    path('category/<str:category>/', PostListViewByCategory.as_view(), name='posts_list_by_category'),
 
     path('feed/', LatestPostsFeed(), name='post_feed'),
     path('search/', post_search, name='post_search'),

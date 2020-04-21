@@ -42,12 +42,7 @@ class PostListView(ListView):
     def get_context_data(self, **kwargs):
         """With pagination for posts list view"""
         context = super(PostListView, self).get_context_data(**kwargs)
-
-        if self.kwargs.get('category'):
-            category = get_object_or_404(Category, title=self.kwargs.get('category'))
-            posts = Post.objects.filter(category=category.id, status='published')
-        else:
-            posts = self.get_queryset()
+        posts = self.get_queryset()
 
         page = self.request.GET.get('page')
         paginator = Paginator(posts, self.paginate_by)
@@ -61,6 +56,39 @@ class PostListView(ListView):
         context['posts'] = posts
         if self.kwargs.get('tag_slug'):
             context['tag'] = get_object_or_404(Tag, slug=self.kwargs.get('tag_slug'))
+        return context
+
+
+class PostListViewByCategory(ListView):
+    context_object_name = 'posts'
+    template_name = 'posts.html'
+    paginate_by = settings.POSTS_PER_PAGE
+
+    def get_queryset(self, **kwargs):
+        posts = Post.objects.filter(status='published')
+        try:
+            if self.kwargs['category']:
+                category = get_object_or_404(Category, title=self.kwargs.get('category'))
+                posts = Post.objects.filter(category=category.id, status='published')
+                return posts
+        except KeyError:
+            return posts
+
+    def get_context_data(self, **kwargs):
+        """With pagination for posts list view"""
+        context = super(PostListViewByCategory, self).get_context_data(**kwargs)
+        posts = self.get_queryset()
+
+        page = self.request.GET.get('page')
+        paginator = Paginator(posts, self.paginate_by)
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        context['posts'] = posts
         if self.kwargs.get('category'):
             context['category'] = get_object_or_404(Category, title=self.kwargs.get('category'))
         return context
@@ -74,6 +102,23 @@ class PostListUserView(ListView):
 
     def get_queryset(self):
         return self.model.objects.filter(author=self.request.user, status='published')
+
+    def get_context_data(self, **kwargs):
+        """With pagination for posts list view"""
+        context = super(PostListUserView, self).get_context_data(**kwargs)
+        posts = self.get_queryset()
+
+        page = self.request.GET.get('page')
+        paginator = Paginator(posts, self.paginate_by)
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        context['posts'] = posts
+        return context
 
 
 class PostDetailsView(DetailView):
