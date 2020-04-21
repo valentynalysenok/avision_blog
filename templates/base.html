@@ -33,104 +33,7 @@
 
 <div class="super_container">
 
-    <!-- Header -->
-
-    <header class="header">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="header_content d-flex flex-row align-items-center justify-content-start">
-                        <div class="logo"><a href="{% url 'blog' %}">avision blog</a></div>
-                        <nav class="main_nav">
-                            <ul>
-                                <li class="active"><a href="{% url 'blog' %}">Home</a></li>
-                                <li><a href="{% url 'about' %}">About</a></li>
-                                <li><a href="{% url 'posts:posts_list' %}">Posts</a></li>
-                                <li><a href="{% url 'contact' %}">Contact</a></li>
-                                <li><a href="{% url 'posts:post_feed' %}" class="btn btn-outline-warning">RSS feed</a>
-                                </li>
-                                <!-- View for is authenticated -->
-                                {% if request.user.is_authenticated %}
-                                    <div class="btn-group">
-                                        <button type="button"
-                                                class="btn btn-outline-success">{{ request.user.username }}</button>
-                                        <button type="button"
-                                                class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                                                data-toggle="dropdown">
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a href="{% url 'posts:posts_list_owner' request.user %}"
-                                               class="dropdown-item">My Posts</a>
-                                            <a href="{% url 'posts:create_post' %}" class="dropdown-item">&plus;Add
-                                                Post</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="/accounts/logout/" class="dropdown-item">Logout</a>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                                <!-- View for is not authenticated -->
-                                {% if not request.user.is_authenticated %}
-                                    <li><a href="{% url 'users:django_registration_register' %}">Sign up</a></li>
-                                    <li><a href="/accounts/login/">Sign in</a></li>
-                                {% endif %}
-                            </ul>
-                        </nav>
-                        <div class="search_container ml-auto">
-                            <a class="btn btn-outline-info" href="{% url 'posts:post_search' %}">
-                                <i class="fa fa-search"></i>
-                                Search Post
-                            </a>
-                        </div>
-                        <div class="hamburger ml-auto menu_mm">
-                            <i class="fa fa-bars trans_200 menu_mm" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Menu -->
-
-    <div class="menu d-flex flex-column align-items-end justify-content-start text-right menu_mm trans_400">
-        <div class="menu_close_container">
-            <div class="menu_close">
-                <div></div>
-                <div></div>
-            </div>
-        </div>
-        <div class="logo menu_mm"><a href="{% url 'blog' %}">Avision</a></div>
-        <nav class="menu_nav">
-            <ul class="menu_mm">
-                <li class="menu_mm"><a href="{% url 'blog' %}">Home</a></li>
-                <li class="menu_mm"><a href="{% url 'about' %}">About</a></li>
-                <li class="menu_mm"><a href="{% url 'posts:posts_list' %}">Posts</a></li>
-                <li class="menu_mm"><a href="{% url 'contact' %}">Contact</a></li>
-                <li><a href="{% url 'posts:post_feed' %}" class="btn btn-outline-warning">RSS feed</a></li>
-                <!-- View for is authenticated -->
-                {% if request.user.is_authenticated %}
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-outline-success">{{ request.user.username }}</button>
-                        <button type="button"
-                                class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-                                data-toggle="dropdown">
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="{% url 'posts:posts_list_owner' request.user %}" class="dropdown-item">My Posts</a>
-                            <a href="{% url 'posts:create_post' %}" class="dropdown-item">&plus;Add Post</a>
-                            <div class="dropdown-divider"></div>
-                            <a href="/accounts/logout/" class="dropdown-item">Logout</a>
-                        </div>
-                    </div>
-                {% endif %}
-                <!-- View for is not authenticated -->
-                {% if not request.user.is_authenticated %}
-                    <li><a href="{% url 'users:django_registration_register' %}">Sign up</a></li>
-                    <li><a href="/accounts/login/">Sign in</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-    </div>
+    {% include 'includes/navbar.html' %}
 
     <!-- Home -->
     {% block content %}
@@ -288,44 +191,39 @@
                                     </div>
                                 </div>
                                 <div class="post_body mt-5">
-                                    <h3 class="mt-1">
-                                        <p class="badge badge-success">Avision Blog. We've written {% total_posts %}
-                                            posts so far.</p>
+                                    <h3>
+                                        <p class="badge badge-secondary">
+                                            Avision Blog. We've written {% total_posts %} posts so far.
+                                        </p>
                                     </h3>
-                                    <p class="post_p">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-                                        enim nulla,
-                                        mollis eu metus in, sagittis fringilla tortor. Phasellus eget purus id felis
-                                        dignissim
-                                        convallis. Suspendisse et augue dui. Morbi gravida sed justo vel venenatis. Ut
-                                        tempor
-                                        pretium maximus. Donec libero diam, faucibus vitae lectus nec, accumsan gravida
-                                        dui. Nam
-                                        interdum mi eget lacus aliquet, sit amet ultricies magna pharetra. In ut odio a
-                                        ligula
-                                        egestas pretium et quis sapien. Etiam faucibus magna eu porta vulputate. Aliquam
-                                        euismod
-                                        rhoncus malesuada. Nunc rutrum hendrerit semper.</p>
-                                    <p class="post_p">Maecenas vitae sem varius, imperdiet nisi a, tristique nisi. Sed
-                                        scelerisque suscipit leo cursus accumsan. Donec vel turpis quam. Mauris non nisl
-                                        nec
-                                        nunc gravida ullamcorper id vestibulum magna. Donec non velit finibus, laoreet
-                                        arcu nec,
-                                        facilisis augue. Aliquam sed purus id erat accumsan congue. Mauris semper
-                                        ullamcorper
-                                        nibh non pellentesque. Aenean euismod purus sit amet quam vehicula ornare.</p>
-                                    <p class="post_p">Donec orci dolor, pretium in luctus id, consequat vitae nibh.
-                                        Quisque
-                                        hendrerit, lorem sit amet mollis malesuada, urna orci volutpat ex, sed
-                                        scelerisque nunc
-                                        velit et massa. Sed maximus id erat vel feugiat. Phasellus bibendum nisi non
-                                        urna
-                                        bibendum elementum. Aenean tincidunt nibh vitae ex facilisis ultrices. Integer
-                                        ornare
-                                        efficitur ultrices. Integer neque lectus, venenatis at pulvinar quis, aliquet id
-                                        neque.
-                                        Mauris ultrices consequat velit, sed dignissim elit posuere in. Cras vitae
-                                        dictum
-                                        dui.</p>
+                                    <p class="post_p">
+                                        Reaching the stars just got a bit easier. A new study argues that the boundary
+                                        between Earth’s atmosphere and outer space—known as the Kármán line—is 20
+                                        kilometers, or about 20%, closer than scientists thought. Though the new
+                                        definition won’t make a difference for launching rockets and spacecraft, it
+                                        could help clarify a legal debate that will set the rules for space policy—and
+                                        commercial spaceflight—for years to come.
+                                    </p>
+                                    <p class="post_p">
+                                        Until now, most scientists have said that outer space is 100 kilometers away. At
+                                        that point, it’s been thought, the speed needed to achieve lift in the superthin
+                                        atmosphere is equal to the speed needed to simply orbit the planet; once there,
+                                        a spacecraft’s horizontal pace would counteract the tug of Earth’s gravity. It’s
+                                        an insight that has long been credited to aerodynamics pioneer Theodore von
+                                        Kármán, though he credited the term to the world’s first “space lawyer,” Andrew
+                                        Haley, in 1963
+                                    </p>
+                                    <p class="post_p">
+                                        A close look shows that the traditional definition flies in the face of
+                                        evidence, says Jonathan McDowell, an astrophysicist at the Harvard-Smithsonian
+                                        Center for Astrophysics in Cambridge, Massachusetts. As a hobby, McDowell
+                                        compiles an influential, detailed record of rocket launches online. “I’ve been
+                                        making lists of rockets since I was 13,” he says. He often has to decide which
+                                        launches qualify as reaching outer space, and which do not. Given how low many
+                                        orbiting satellites fly, the 100-kilometer limit never seemed right to McDowell.
+                                        He preferred the mesopause, the coldest point in Earth’s atmosphere, located
+                                        roughly 85 kilometers up. (Recent estimates have bumped it somewhat higher.)
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -378,20 +276,8 @@
                 <div class="col-lg-3 order-lg-2 order-1">
                     <div class="subscribe">
                         <div class="subscribe_background"></div>
-                        <div class="subscribe_content">
-                            <div class="subscribe_title">Subscribe</div>
-                            <form action="#">
-                                <input type="email" class="sub_input" placeholder="Your Email" required="required">
-                                <button class="sub_button">
-                                    <svg version="1.1" id="link_arrow_1" xmlns="http://www.w3.org/2000/svg" x="0px"
-                                         y="0px"
-                                         width="19px" height="13px" viewBox="0 0 19 13"
-                                         enable-background="new 0 0 19 13" xml:space="preserve">
-										<polygon fill="#FFFFFF"
-                                                 points="12.475,0 11.061,0 17.081,6.021 0,6.021 0,7.021 17.038,7.021 11.06,13 12.474,13 18.974,6.5 "/>
-									</svg>
-                                </button>
-                            </form>
+                        <div class="home_slider_next"
+                             style="background-image:url(https://c4.wallpaperflare.com/wallpaper/539/356/903/1920a-background-black-face-wallpaper-preview.jpg); background-size: 100%;">
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,98 @@
+<!-- Header -->
+
+<header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="header_content d-flex flex-row align-items-center justify-content-start">
+                        <div class="logo"><a href="{% url 'blog' %}">avision blog</a></div>
+                        <nav class="main_nav">
+                            <ul>
+                                <li class="active"><a href="{% url 'blog' %}">Home</a></li>
+                                <li><a href="{% url 'about' %}">About</a></li>
+                                <li><a href="{% url 'posts:posts_list' %}">Posts</a></li>
+                                <li><a href="{% url 'contact' %}">Contact</a></li>
+                                <li><a href="{% url 'posts:post_feed' %}" class="btn btn-outline-warning">RSS feed</a>
+                                </li>
+                                <!-- View for is authenticated -->
+                                {% if request.user.is_authenticated %}
+                                    <div class="btn-group">
+                                        <button type="button"
+                                                class="btn btn-outline-success">{{ request.user.username }}</button>
+                                        <button type="button"
+                                                class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
+                                                data-toggle="dropdown">
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a href="{% url 'posts:posts_list_owner' request.user %}"
+                                               class="dropdown-item">My Posts</a>
+                                            <a href="{% url 'posts:create_post' %}" class="dropdown-item">&plus;Add
+                                                Post</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a href="/accounts/logout/" class="dropdown-item">Logout</a>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <!-- View for is not authenticated -->
+                                {% if not request.user.is_authenticated %}
+                                    <li><a href="{% url 'users:django_registration_register' %}">Sign up</a></li>
+                                    <li><a href="/accounts/login/">Sign in</a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                        <div class="search_container ml-auto">
+                            <a class="btn btn-outline-info" href="{% url 'posts:post_search' %}">
+                                <i class="fa fa-search"></i>
+                                Search Post
+                            </a>
+                        </div>
+                        <div class="hamburger ml-auto menu_mm">
+                            <i class="fa fa-bars trans_200 menu_mm" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+<!-- Menu -->
+
+<div class="menu d-flex flex-column align-items-end justify-content-start text-right menu_mm trans_400">
+    <div class="menu_close_container">
+        <div class="menu_close">
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <div class="logo menu_mm"><a href="{% url 'blog' %}">Avision</a></div>
+    <nav class="menu_nav">
+        <ul class="menu_mm">
+            <li class="menu_mm"><a href="{% url 'blog' %}">Home</a></li>
+            <li class="menu_mm"><a href="{% url 'about' %}">About</a></li>
+            <li class="menu_mm"><a href="{% url 'posts:posts_list' %}">Posts</a></li>
+            <li class="menu_mm"><a href="{% url 'contact' %}">Contact</a></li>
+            <li><a href="{% url 'posts:post_feed' %}" class="btn btn-outline-warning">RSS feed</a></li>
+            <!-- View for is authenticated -->
+            {% if request.user.is_authenticated %}
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-success">{{ request.user.username }}</button>
+                    <button type="button"
+                            class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
+                            data-toggle="dropdown">
+                    </button>
+                    <div class="dropdown-menu">
+                        <a href="{% url 'posts:posts_list_owner' request.user %}" class="dropdown-item">My Posts</a>
+                        <a href="{% url 'posts:create_post' %}" class="dropdown-item">&plus;Add Post</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="/accounts/logout/" class="dropdown-item">Logout</a>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- View for is not authenticated -->
+            {% if not request.user.is_authenticated %}
+                <li><a href="{% url 'users:django_registration_register' %}">Sign up</a></li>
+                <li><a href="/accounts/login/">Sign in</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
