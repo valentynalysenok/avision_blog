@@ -17,10 +17,10 @@ class Post(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     body = models.TextField()
     tags = TaggableManager()
-    image = models.ImageField(upload_to='posts/', default='posts/post_16.jpg')
+    image = models.ImageField(upload_to='posts/', null=True, blank=True)
     category = models.ForeignKey('Category', default=1, null=True, on_delete=models.SET_NULL)
-    likes = models.ManyToManyField(CustomUser, related_name="like_voters")
-    dislikes = models.ManyToManyField(CustomUser, related_name="dislike_voters")
+    likes = models.ManyToManyField(CustomUser, related_name="like_voters", blank=True)
+    dislikes = models.ManyToManyField(CustomUser, related_name="dislike_voters", blank=True)
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -79,13 +79,19 @@ class Comment(models.Model):
 
 class Category(models.Model):
     title = models.CharField(max_length=150)
+    slug = models.SlugField(max_length=250, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
-        ordering = ('-created',)
+        ordering = ('title',)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = custom_slugify(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

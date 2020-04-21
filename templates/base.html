@@ -50,7 +50,11 @@
                     {% for post in latest_posts %}
                         <div class="owl-item">
                             <div class="home_slider_background">
-                                <img src="{{ post.image.url }}" alt="">
+                                {% if post.image %}
+                                    <img src="{{ post.image.url }}" alt="">
+                                {% else %}
+                                    <img src="../media/posts/post_default.jpg" alt="">
+                                {% endif %}
                             </div>
                             <div class="home_slider_content_container">
                                 <div class="container">
@@ -250,18 +254,36 @@
                         <div class="footer_logo"><a href="#">avision</a></div>
                         <div class="footer_social">
                             <ul>
-                                <li class="footer_social_facebook"><a href="#"><i class="fa fa-facebook"
-                                                                                  aria-hidden="true"></i></a></li>
-                                <li class="footer_social_twitter"><a href="#"><i class="fa fa-twitter"
-                                                                                 aria-hidden="true"></i></a></li>
-                                <li class="footer_social_pinterest"><a href="#"><i class="fa fa-pinterest"
-                                                                                   aria-hidden="true"></i></a></li>
-                                <li class="footer_social_vimeo"><a href="#"><i class="fa fa-vimeo"
-                                                                               aria-hidden="true"></i></a></li>
-                                <li class="footer_social_instagram"><a href="#"><i class="fa fa-instagram"
-                                                                                   aria-hidden="true"></i></a></li>
-                                <li class="footer_social_google"><a href="#"><i class="fa fa-google"
-                                                                                aria-hidden="true"></i></a></li>
+                                <li class="footer_social_facebook">
+                                    <a href="https://www.facebook.com/tinalysenok">
+                                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li class="footer_social_twitter">
+                                    <a href="https://twitter.com/SpaceX?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor">
+                                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li class="footer_social_pinterest">
+                                    <a href="https://www.pinterest.com/cloudb/awesome-outer-space-crafts/">
+                                        <i class="fa fa-pinterest" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li class="footer_social_vimeo">
+                                    <a href="https://www.linkedin.com/in/valentyna-lysenok/">
+                                        <i class="fa fa-linkedin" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li class="footer_social_instagram">
+                                    <a href="https://www.instagram.com/valen_tina_vl/">
+                                        <i class="fa fa-instagram" aria-hidden="true"></i>
+                                    </a>
+                                </li>
+                                <li class="footer_social_google">
+                                    <a href="mailto:valentyna.lysenok@gmail.com">
+                                        <i class="fa fa-google" aria-hidden="true"></i>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                         <div class="copyright">

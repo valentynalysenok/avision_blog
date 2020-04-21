@@ -12,7 +12,11 @@
 
     <div class="home">
         <div class="home_background parallax-window" data-parallax="scroll" data-speed="0.8">
-            <img src="{{ post.image.url }}" alt="">
+            {% if post.image %}
+                <img src="{{ post.image.url }}" alt="" style="background-size: 100%;">
+            {% else %}
+                <img src="https://i.imgur.com/4Y5V00u.jpg" alt="" style="background-size: 100%;">
+            {% endif %}
         </div>
         <div class="home_content">
             <h3><a href="{% url "posts:posts_list_by_category" post.category %}" class="badge badge-secondary">

@@ -32,13 +32,6 @@ class PostListView(ListView):
     def get_queryset(self, **kwargs):
         posts = Post.objects.filter(status='published')
         try:
-            if self.kwargs['category']:
-                category = get_object_or_404(Category, title=self.kwargs.get('category'))
-                posts = Post.objects.filter(category=category.id, status='published')
-                return posts
-        except KeyError:
-            return posts
-        try:
             if self.kwargs['tag_slug']:
                 tag = get_object_or_404(Tag, slug=self.kwargs.get('tag_slug'))
                 posts = Post.objects.filter(tags__in=[tag], status='published')
@@ -49,7 +42,12 @@ class PostListView(ListView):
     def get_context_data(self, **kwargs):
         """With pagination for posts list view"""
         context = super(PostListView, self).get_context_data(**kwargs)
-        posts = self.get_queryset()
+
+        if self.kwargs.get('category'):
+            category = get_object_or_404(Category, title=self.kwargs.get('category'))
+            posts = Post.objects.filter(category=category.id, status='published')
+        else:
+            posts = self.get_queryset()
 
         page = self.request.GET.get('page')
         paginator = Paginator(posts, self.paginate_by)
@@ -59,6 +57,7 @@ class PostListView(ListView):
             posts = paginator.page(1)
         except EmptyPage:
             posts = paginator.page(paginator.num_pages)
+
         context['posts'] = posts
         if self.kwargs.get('tag_slug'):
             context['tag'] = get_object_or_404(Tag, slug=self.kwargs.get('tag_slug'))

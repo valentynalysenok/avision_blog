@@ -7,10 +7,11 @@ from .models import Post, Comment
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'body')
+        fields = ('title', 'category', 'body')
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control mt-2', 'placeholder': 'Title'}),
+            'category': forms.Select(attrs={'class': 'form-control', 'required': 'required'}),
             'body': forms.Textarea(attrs={'class': 'form-control mt-2', 'placeholder': 'Content'}),
         }
 

@@ -12,14 +12,14 @@
                     <div class="container">
 
                         {% if tag %}
-                            <h3 class="text-center mt-5" style="font-family: 'Ubuntu', sans-serif; color: black;">
+                            <h3 class="text-center mt-3" style="font-family: 'Ubuntu', sans-serif; color: black;">
                                 Posts tagged with
                                 <span class="badge badge-success">#{{ tag.name }}</span>
                             </h3>
                         {% endif %}
 
                         {% if category %}
-                            <h3 class="text-center mt-5" style="font-family: 'Ubuntu', sans-serif; color: black;">
+                            <h3 class="text-center mt-3" style="font-family: 'Ubuntu', sans-serif; color: black;">
                                 Posts by category
                                 <span class="badge badge-success">{{ category.title }}</span>
                             </h3>
@@ -43,7 +43,13 @@
 
                             {% for post in posts %}
                                 <div class="card mb-4">
-                                    <img class=" card-img-top" src="{{ post.image.url }}" alt="">
+
+                                    {% if post.image %}
+                                        <img class=" card-img-top" src="{{ post.image.url }}" alt="">
+                                    {% else %}
+                                        <img class=" card-img-top" src="https://i.imgur.com/4Y5V00u.jpg" alt="">
+                                    {% endif %}
+
                                     <div class="card-body">
                                         <div class="card-title card-title-small">
                                             <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
@@ -67,7 +73,7 @@
 
                 {% if is_paginated %}
                     <div class="load_more">
-                        {% include 'includes/paginator.html' %}
+                        {% include 'includes/pagination.html' %}
                     </div>
                 {% endif %}
 
