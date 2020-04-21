@@ -21,8 +21,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import path, include
 
 from posts.sitemaps import PostSitemap
-from posts.views import BlogView
-from .views import about, contact
+from posts.views import BlogView, AboutView
 
 sitemaps = {'posts': PostSitemap, }
 
@@ -30,14 +29,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', BlogView.as_view(), name='blog'),
+    path('about/', AboutView.as_view(), name='about'),
+
     path('blog/', include(('posts.urls', 'posts'), namespace='posts')),
     path('users/', include(('users.urls', 'users'), namespace='users')),
+    path('contact/', include(('contact.urls', 'contact'), namespace='contact')),
 
     path('accounts/', include('django_registration.backends.one_step.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
-
-    path('about/', about, name='about'),
-    path('contact/', contact, name='contact'),
 
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
          name='django.contrib.sitemaps.views.sitemap'),

@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.postgres.search import TrigramSimilarity
@@ -19,6 +18,10 @@ from .utils import send_email
 
 class BlogView(TemplateView):
     template_name = 'base.html'
+
+
+class AboutView(TemplateView):
+    template_name = 'about.html'
 
 
 class PostListView(ListView):
