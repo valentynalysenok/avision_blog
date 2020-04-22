@@ -1,6 +1,7 @@
 # Avision Blog
 
 ## Overview
+#### Django3, PostgreSQL
 Basic models:<br />
 - User (sign in / signup)<br />
     - Used **hunter.io** for verifying email existence on signup
