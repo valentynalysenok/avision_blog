@@ -2,10 +2,9 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.postgres.search import TrigramSimilarity, SearchVector, SearchQuery, SearchRank
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
-from django.db.models.functions import Greatest
 from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, UpdateView, DeleteView, CreateView, TemplateView, DetailView
@@ -147,12 +146,10 @@ class PostDetailsView(DetailView):
 
     def post(self, request, *args, **kwargs):
         try:
-            if request.method == 'POST':
-                form = CommentForm(request.POST)
-                form.instance.post = self.model.objects.get(slug=self.kwargs.get('slug'))
-                form.instance.user = self.request.user
-                form.save()
-                return redirect('posts:post_detail', slug=self.kwargs.get('slug'))
+            form = CommentForm(request.POST)
+            form.instance.post = self.model.objects.get(slug=self.kwargs.get('slug'))
+            form.instance.user = self.request.user
+            form.save()
             return redirect('posts:post_detail', slug=self.kwargs.get('slug'))
         except ValueError:
             return redirect('users:django_registration_register')
