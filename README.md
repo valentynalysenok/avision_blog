@@ -3,18 +3,18 @@
 ## Overview
 #### Django3, PostgreSQL
 Basic models:<br />
-- CustomUser (sign in / signup)<br />
+- `CustomUser` (sign in / signup)<br />
     - Used **hunter.io** for verifying email existence on signup
     - Used **clearbit.com** for getting additional data for the user on signup (user's first and last name)
-- Post (made by a registered user)<br />
+- `Post` (made by a registered user)<br />
     - Post CRUD operations by using **Class-based views Django**
     - Share post by using **email / custom logic** (Gmail-serever)
     - Share post by using **django-social-share** (Facebook, LinkedIn, Twitter, Telegram, WhatsApp)
-- Comment (made by a registered user)<br />
+- `Comment` (made by a registered user)<br />
     - Send email to an author when the comment was added
-- Category (post categorization)
-- Tags by using **django_taggit**
-- Contact (for sent message using contact form)
+- `Category` (post categorization)
+- `Tags` by using **django_taggit**
+- `Contact` (for sent message using contact form)
 - **Recommendation** system of posts (list of similar posts)
 - **Like vs Dislike** for registered user
 
