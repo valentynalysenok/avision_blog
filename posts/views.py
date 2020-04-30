@@ -127,7 +127,7 @@ class PostDetailsView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        post = self.model.objects.get(slug=self.kwargs.get('slug'))
+        post = get_object_or_404(self.model, slug=self.kwargs.get('slug'))
 
         # get list of similar posts
         post_tags_ids = post.tags.values_list('id', flat=True)
